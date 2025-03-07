@@ -1,14 +1,14 @@
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-const userSchema = new Mongoose.Schema(
+const userSchema = new mongoose.Schema(
   {
     id: {
       type: String,
       required: true,
     },
     watchHistory: {
-      type: Mongoose.Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Video",
     },
     username: {
