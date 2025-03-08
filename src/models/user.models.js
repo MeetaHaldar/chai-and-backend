@@ -3,10 +3,6 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 const userSchema = new mongoose.Schema(
   {
-    // id: {
-    //   type: String,
-    //   required: true,
-    // },
     watchHistory: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Video",
