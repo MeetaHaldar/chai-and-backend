@@ -21,8 +21,8 @@ import userRouter from "./routes/user.routes.js";
 // routes declaration
 app.use("/api/v1/users", userRouter);
 
-app.listen(process.env.PORT, () => {
-  console.log(`App is running on port ${process.env.PORT}`);
-});
+// app.listen(process.env.PORT, () => {
+//   console.log(`App is running on port ${process.env.PORT}`);
+// });
 
 export { app };

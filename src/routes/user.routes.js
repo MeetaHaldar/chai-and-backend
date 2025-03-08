@@ -1,24 +1,9 @@
-import { Router } from "express";
+import express from "express";
 import { registerUser } from "../controllers/user.controller.js";
 import { upload } from "../middleware/multer.middleware.js";
-const router = Router();
 
-router.route("/register").post(
-  upload.fields([
-    {
-      name: "avatar",
-      maxCount: 1,
-    },
-    {
-      name: "coverImage",
-      maxCount: 1,
-    },
-  ]),
-  registerUser
-);
-// router.route("/").post((req, res) => {
-//   res.send("hello");
-// });
-// router.route("/loign").post(loginUser);
+const router = express.Router();
+
+router.post("/register", upload, registerUser); // Apply upload middleware first
 
 export default router;
