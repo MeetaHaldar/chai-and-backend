@@ -7,6 +7,7 @@ import {
   changeCurrentPassword,
   getCurrentuser,
   updateAvatar,
+  updateCoverImage,
 } from "../controllers/user.controller.js";
 import { upload } from "../middleware/multer.middleware.js";
 import { verifyJWT } from "../middleware/auth.middleware.js";
