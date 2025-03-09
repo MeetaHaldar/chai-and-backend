@@ -193,7 +193,7 @@ export const changeCurrentPassword = asyncHandler(async (req, res) => {
     throw new ApiError(400, "old password and new password is required");
   }
 
-  const user = await User.findById(req.user?.id);
+  const user = await User.findById(req.user?._id);
   const isPasswordCorrect = await user.isPasswordCorrect(oldPassword);
   if (!isPasswordCorrect) {
     throw new ApiError(401, "The old password is not correct");
@@ -207,4 +207,24 @@ export const getCurrentuser = asyncHandler(async () => {
   return res
     .status(200)
     .json(200, req.user, "current user fetched successfully");
+});
+
+export const updateAccountDetails = asyncHandler(async (req, res) => {
+  const { fullName, email } = req.body;
+  if (!fullName || !email) {
+    throw new ApiError(400, "all fileds are required");
+  }
+  const user = await User.findByIdAndUpdate(
+    req.user?._id,
+    {
+      $set: {
+        fullName,
+        email: email,
+      },
+    },
+    { new: true }
+  ).select("-password");
+  return res
+    .status(200)
+    .json(new ApiResponse(200, user, "Accounts details updated successfully"));
 });

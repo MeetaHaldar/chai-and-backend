@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Celebration</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div id="countdown-container">
+        <h1 id="countdown"></h1>
+    </div>
+
+    <div id="birthday-animation" class="hidden">
+        <h1 class="birthday-text">Happy Birthday Anurag! 🎉🎂</h1>
+    </div>
+
+    <div id="gallery-section" class="hidden">
+        <h1 class="gallery-heading">Happy Birthday Anurag</h1>
+        <div class="carousel-container">
+            <div class="gallery-container" id="gallery"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            let countdownElement = document.getElementById("countdown");
+            let countdownContainer = document.getElementById("countdown-container");
+            let birthdayAnimation = document.getElementById("birthday-animation");
+            let gallerySection = document.getElementById("gallery-section");
+            let galleryContainer = document.getElementById("gallery");
+
+            let count = 5;
+            countdownElement.innerText = count;
+
+            let countdownInterval = setInterval(() => {
+                count--;
+                countdownElement.innerText = count;
+                if (count === 0) {
+                    clearInterval(countdownInterval);
+                    countdownContainer.style.display = "none";
+                    birthdayAnimation.classList.remove("hidden");
+                    birthdayAnimation.classList.add("zoom-in");
+                    setTimeout(() => {
+                        birthdayAnimation.style.display = "none";
+                        gallerySection.classList.remove("hidden");
+                        gallerySection.classList.add("fade-in-scale");
+                    }, 3000);
+                }
+            }, 1000);
+
+            const imageArray = Array.from({ length: 30 }, (_, i) => `image${i + 1}.jpg`);
+
+            imageArray.forEach((src) => {
+                const img = document.createElement("img");
+                img.src = src;
+                img.alt = "Photo";
+                img.classList.add("gallery-image");
+                galleryContainer.appendChild(img);
+            });
+        });
+    </script>
+
+    <style>
+        body {
+            background: linear-gradient(to right, #fbc2eb, #a6c1ee);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #countdown-container {
+            font-size: 5em;
+            font-weight: bold;
+            color: #4a4a4a;
+        }
+
+        .birthday-text {
+            font-size: 4em;
+            font-weight: bold;
+            color: #ff4081;
+            animation: zoomIn 2s ease-in-out;
+        }
+
+        .gallery-heading {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        .carousel-container {
+            width: 100vw;
+            overflow: hidden;
+            position: relative;
+            white-space: nowrap;
+        }
+
+        .gallery-container {
+            display: flex;
+            gap: 20px;
+            animation: slideAnimation 20s linear infinite;
+        }
+
+        .gallery-image {
+            width: 250px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 15px;
+            transition: transform 0.3s;
+        }
+
+        .gallery-image:hover {
+            transform: scale(1.1);
+        }
+
+        @keyframes slideAnimation {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+    </style>
+</body>
+
+</html>
