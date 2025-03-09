@@ -95,6 +95,7 @@ export const loginUser = asyncHandler(async (req, res) => {
   const loggedInUser = await User.findById(user._id).select(
     "-password -refreshToken"
   );
+  await user.save({ validateBeforeSave: false });
   const options = {
     httpOnly: true,
     secure: true,
@@ -169,7 +170,7 @@ export const refreshAccessToken = asyncHandler(async (req, res) => {
 
     const { accessToken, newRefreshToken } =
       await generateAccessAndRefreshToken(user._id);
-
+    await user.save({ validateBeforeSave: false });
     return res
       .status(200)
       .cookie("accessToken", accessToken, options)
@@ -184,4 +185,26 @@ export const refreshAccessToken = asyncHandler(async (req, res) => {
   } catch (error) {
     throw new ApiError(401, error?.message || "Invalid refresh token");
   }
+});
+
+export const changeCurrentPassword = asyncHandler(async (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+  if (!oldPassword && !newPassword) {
+    throw new ApiError(400, "old password and new password is required");
+  }
+
+  const user = await User.findById(req.user?.id);
+  const isPasswordCorrect = await user.isPasswordCorrect(oldPassword);
+  if (!isPasswordCorrect) {
+    throw new ApiError(401, "The old password is not correct");
+  }
+  user.password = newPassword;
+  await user.save({ validateBeforeSave: false });
+  return res.status(200).json(new ApiResponse(200, "Password updated"));
+});
+
+export const getCurrentuser = asyncHandler(async () => {
+  return res
+    .status(200)
+    .json(200, req.user, "current user fetched successfully");
 });
